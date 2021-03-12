@@ -28,7 +28,7 @@ export default class LastRace extends React.Component
 			time = {item.time}
 			/>;
 	}
-	async componentDidMount()
+	/*async componentDidMount()
 	{
 		axios.get('http://192.168.0.17:5000/', {
 			headers: {
@@ -52,7 +52,7 @@ export default class LastRace extends React.Component
 			//setNextTrack(track);
 			//setCurrentTime(time);
 		});
-	}
+	}*/
 	renderItems(){
 		const items = this.state.data;
 		const listItems = items.map((item) => 

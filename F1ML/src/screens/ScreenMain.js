@@ -43,27 +43,6 @@ export default class ScreenMain extends React.Component{
 		})).catch(errors => {
 			console.error(errors);
 		})
-
-		/*await axios.get('/time').then(res => 
-		{
-			//console.log(res.data);
-			this.setState({
-				timeData: res.data;
-			});
-			//const time = res.data.time;
-			//const track = res.data.track;
-			//setNextTrack(track);
-			//setCurrentTime(time);
-		});
-
-		await axios.get('/').then(res =>
-		{
-			console.log(res);
-			this.setState({
-				raceData: res.data;
-				loading: false
-			});
-		});*/
 	}
 	renderItems = ({item},{i}) => {
 		//const index = i;
@@ -98,8 +77,6 @@ export default class ScreenMain extends React.Component{
 					{
 						//console.log(this.state.raceData);
 					}
-					
-					
 					return(
 						<>
 							<Header/>

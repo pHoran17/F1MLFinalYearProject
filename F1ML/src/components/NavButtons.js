@@ -52,7 +52,7 @@ import {useNavigation} from '@react-navigation/native';
 
 }*/
 const NavButtons = ({navigation}) => {
-	console.log(navigation)
+	//console.log(navigation)
 
 	const onHomePress = () => {
 		navigation.navigate("Main")
