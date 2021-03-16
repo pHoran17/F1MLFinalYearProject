@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
 		alignSelf:'stretch',
 		paddingTop: 15,
 		paddingBottom: 5,
-		backgroundColor: '#ed1005'
+		backgroundColor: '#ed1005',
+		top:0
 
 	},
 	headerText:{
@@ -26,5 +27,8 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		textAlign: 'center',
 		color: '#ffffff'
+	},
+	headerButton:{
+		
 	}
 });

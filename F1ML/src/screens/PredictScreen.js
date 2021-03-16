@@ -80,26 +80,33 @@ export default class PredictScreen extends React.Component
 			//console.log(this.state.modelData);
 			return(
 				<>
-					<Header />
+					<View style={styles.header}>
+						<Header />
+					</View>
 					<FlatList 
+							style={styles.resultsList}
 							data={this.state.modelData}
-							keyExtractor={(item,index) => item.index}
+							keyExtractor={(item,index) => item.index.toString()}
 							renderItem={({item, index}) => (
 								<ListItem>
 									<ListItem.Content>
 										<Text>
-											Intercept (MS): {item.intercepts}
+											Results: {item.results}
 										</Text>
 										<Text>
-											Coefficent (MS): {item.coefficents}
+											Podium: {item.podium}
+										</Text>
+										<Text>
+											Actual Podium: {item.actual}
+										</Text>
+										<Text>
+											Predicted Podium: {item.prediction}
 										</Text>
 									</ListItem.Content>
 								</ListItem>
 							)}
 						/>
-					<View style={styles.container}>
-						<Image style={styles.graph} source={{uri: `data:image/png;base64,${this.state.graphData}`}}/>
-					</View>
+					
 					<View style={styles.buttons}>
 						<NavButtons navigation={this.props.navigation}/>
 					</View>
@@ -124,16 +131,28 @@ export default class PredictScreen extends React.Component
 	}
 
 }
+/*
+<View style={styles.container}>
+						<Image style={styles.graph} source={{uri: `data:image/png;base64,${this.state.graphData}`}}/>
+					</View>
+*/
 const styles = StyleSheet.create({
 	container:{
-		flex:5,
+		flex:10,
 		alignItems:'center'
+	},
+	resultsList:{
+		flex:1,
+		
 	},
 	graph:{
 		width:400,
 		height:400
 	},
 	buttons:{
-		flex:2
+		flex:1,
+		bottom:0,
+		position:'absolute',
+		marginBottom:10
 	}
 });

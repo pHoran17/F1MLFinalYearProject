@@ -84,7 +84,8 @@ const styles = StyleSheet.create({
 	container:{
 		flex: 1,
 		flexDirection:'row',
-		marginTop:20
+		marginTop:20,
+		bottom:0
 	},
 	button:{
 		height: 60,
