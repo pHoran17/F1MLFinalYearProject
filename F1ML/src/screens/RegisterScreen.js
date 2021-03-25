@@ -5,7 +5,7 @@ import Firebase from '../api/Firebase';
 require('firebase/auth');
 
 
-const RegisterScreen = ({navigation}) => {
+const registerScreen = ({navigation}) => {
 	const [email, setEmail] = useState('')
 	const [fullName, setFullName] = useState('')
 	const [password, setPassword] = useState('')
@@ -90,7 +90,97 @@ const RegisterScreen = ({navigation}) => {
 		</>
 	);
 };
+export default class RegisterScreen extends React.Component{
+	constructor(props){
+		super(props);
+		this.state ={
+			fullName:"",
+			email: "",
+			password: "",
+			confirmPassword:""
+		}
+	}
+	onRegisterPress = () => {
+		if(this.state.password != this.state.confirmPassword){
+			alert("Passwords are not the same, Please reinsert password")
+			return
+		}
+		Firebase.auth().createUserWithEmailAndPassword(email,password).then((response) => {
+			const userid = response.user.userid; 
+			const data = {
+				id: userid,
+				email,
+				fullName,
+			};
+			const usersReference = Firebase.firestore().collection('users')
+			usersReference.doc(uid).set(data).then(() => {
+				navigation.navigate('Main',{user:data})
+			})
+			.catch((err) => {
+				alert(err)
+			});
+		}) 
+	}
+	render()
+	{
+		return(
+			<>
+			<Header {...this.props}/>
+			<View style={styles.container}>
+				<Text style={styles.fieldHeader}>Full Name</Text>
+				<TextInput 
+					style={styles.input}
+					placeholder={'Full Name'}
+					placeholderTextColor='#080807'
+					onChangeText = {(fullName) => this.setState({fullName})}
+					value = {this.state.fullName}
+					underlineColorAndroid = "transparent"
+					autoCapitalize = "none"
+				/>
+				<Text style={styles.fieldHeader}>Email</Text>
+				<TextInput 
+					style={styles.input}
+					placeholder={'E-mail'}
+					placeholderTextColor='#080807'
+					onChangeText = {(email) => this.setState({email})}
+					value = {this.state.email}
+					underlineColorAndroid = "transparent"
+					autoCapitalize = "none"
+				/>
+				<Text style={styles.fieldHeader}>Password</Text>
+				<TextInput 
+					style={styles.input}
+					placeholder={'Password'}
+					secureTextEntry = {true}
+					placeholderTextColor='#080807'
+					onChangeText = {(password) => this.setState({password})}
+					value = {this.state.password}
+					underlineColorAndroid = "transparent"
+					autoCapitalize = "none"
+				/>
+				<Text style={styles.fieldHeader}>Confirm Password</Text>
+				<TextInput 
+					style={styles.input}
+					placeholder={'Confirm Password'}
+					secureTextEntry = {true}
+					placeholderTextColor='#080807'
+					onChangeText = {(confirmPassword) => this.setState({confirmPassword})}
+					value = {this.state.confirmPassword}
+					underlineColorAndroid = "transparent"
+					autoCapitalize = "none"
+				/>
+				<TouchableOpacity 
+					style={styles.button}
+					onPress={this.onRegisterPress}
+				>
+					<Text>Register</Text>
+				</TouchableOpacity>
+			</View>
+			</>
+		);
+	}
 
+}
 const styles = StyleSheet.create({
 	container:{
 		flex:10,
@@ -99,10 +189,10 @@ const styles = StyleSheet.create({
 	input:{
 		borderRadius: 5,
 		backgroundColor: '#c4b5b5',
-		marginTop: 20,
+		marginTop: 15,
 		marginLeft: 25,
 		marginRight: 25,
-		marginBottom: 20,
+		marginBottom: 10,
 		padding: 10,
 		paddingLeft: 20,
 		height: 40,
@@ -110,7 +200,7 @@ const styles = StyleSheet.create({
 		overflow: 'hidden'
 	},
 	button:{
-		marginTop: 25,
+		marginTop: 20,
 		height: 40,
 		borderRadius: 5,
 		justifyContent: 'center',
@@ -125,4 +215,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default RegisterScreen;
+//export default RegisterScreen;
