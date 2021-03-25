@@ -93,21 +93,21 @@ const styles = StyleSheet.create({
 	container:{
 		flex: 1,
 		flexDirection:'row',
-		marginTop:20,
+		marginTop:0,
 		bottom:0
 	},
 	button:{
-		height: 60,
-		width:120,
+		height: 85,
+		width:130,
 		borderRadius: 5,
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: '#ed1005',
-		padding: 20,
+		padding: 30,
 		color: '#ffffff'
 	},
 	buttonText:{
-		fontSize:20,
+		fontSize:18,
 		color: '#ffffff'
 	}
 });

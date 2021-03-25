@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
 		flex:1,
 		bottom:0,
 		position:'relative',
-		marginBottom:10
+		marginBottom:10,
+		backgroundColor:'#ed1005'
 	}
 });

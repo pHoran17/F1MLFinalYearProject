@@ -20,7 +20,7 @@ export default class ScreenMain extends React.Component{
 			loading: true
 		};
 	}
-
+	//Calls after render, used for retrieving data from api, render is called again when state is set in componentdidmount
 	async componentDidMount(){
 		const url1 = 'http://192.168.0.17:5000/time';
 		const url2 = 'http://192.168.0.17:5000/';
@@ -44,6 +44,7 @@ export default class ScreenMain extends React.Component{
 			console.error(errors);
 		})
 	}
+	//Unused, flatlist used instead in render
 	renderItems = ({item},{i}) => {
 		//const index = i;
 		console.log(i);
@@ -61,15 +62,17 @@ export default class ScreenMain extends React.Component{
 			</ListItem>
 		);
 	}
+	//Method for rendering screen, called first in lifecycle
 	render()
 	{	
+		//Only gets called provdided racedata is not null, this is to prevent crashes
 		if(this.state.raceData.length !== 0)
 		{
 			//console.log(this.state.raceData[0]);
 					const timeD = this.state.timeData;
 					const raceD = this.state.raceData;
 					const {nav} = this.props.navigation;
-					console.log(this.props);
+					//console.log(this.props);
 					const i = 0;
 					//Convert raceD to array and map text
 					//const raceArr = [raceD];

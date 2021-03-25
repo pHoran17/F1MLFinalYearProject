@@ -181,9 +181,10 @@ const styles = StyleSheet.create({
 		paddingLeft: 15
 	},
 	buttons:{
-		flex:1,
+		flex:2,
 		bottom:0,
 		position:'relative',
-		marginBottom:10
+		marginBottom:10,
+        backgroundColor:'#ed1005'
 	}
 });

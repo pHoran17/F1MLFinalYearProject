@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Firebase from '../api/Firebase';
 //import firebase from 'firebase';
 require('firebase/auth');
@@ -11,7 +11,9 @@ export default class Header extends React.Component {
 		super(props);
 		this.state={
 			loggedIn:false,
-			previousPage: ""
+			previousPage: "",
+			backImage:require('../icons/back.png'),
+			logoutImage:require('../icons/logout.png')
 		}
 	}
 	signOut = () => {
@@ -33,7 +35,7 @@ export default class Header extends React.Component {
 		})
 	}
 	render(){
-		if(this.state.loggedIn == true && this.props.route.name != "Main")
+		if(this.props.route.name == "Results" || this.props.route.name == "Predict")
 		{
 			return(
 				<View style={styles.header}>
@@ -41,13 +43,15 @@ export default class Header extends React.Component {
 							style={styles.backButton}
 							onPress={this.navToPrevPage}
 						>
+							<Image style={styles.buttonImage} source={require('../icons/back.png')}/>
 							<Text>Back</Text>
 					</TouchableOpacity>
-					<Text style={styles.headerText}>F1ML</Text>
+					<Text style={styles.fullHeaderText}>F1ML</Text>
 					<TouchableOpacity 
 							style={styles.logoutButton}
 							onPress={this.signOut}
 						>
+							<Image style={styles.logoutImage} source={require('../icons/logout.png')}/>
 							<Text>Logout</Text>
 					</TouchableOpacity>
 				</View>
@@ -62,6 +66,7 @@ export default class Header extends React.Component {
 							style={styles.logoutButton}
 							onPress={this.signOut}
 						>
+							<Image style={styles.logoutImage} source={require('../icons/logout.png')}/>
 							<Text>Logout</Text>
 					</TouchableOpacity>
 				</View>
@@ -83,9 +88,9 @@ export default class Header extends React.Component {
 							style={styles.backButton}
 							onPress={this.navToPrevPage}
 						>
-							<Text>Back</Text>
+							<Image style={styles.buttonImage} source={require('../icons/back.png')}/>
 					</TouchableOpacity>
-					<Text style={styles.headerText}>F1ML</Text>
+					<Text style={styles.loginHeaderText}>F1ML</Text>
 				</View>
 			);
 		}
@@ -98,7 +103,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection:'row',
 		alignSelf:'stretch',
-		paddingTop: 15,
+		paddingTop: 10,
 		paddingBottom: 5,
 		backgroundColor: '#ed1005',
 		top:0,
@@ -110,11 +115,38 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		textAlign: 'center',
 		color: '#ffffff',
-		marginLeft:170,
+		marginLeft:175,
 		position:'relative'
 	},
+	loginHeaderText:{
+		fontWeight: 'bold',
+		fontSize: 17,
+		textAlign: 'center',
+		color: '#ffffff',
+		marginLeft:110,
+		position:'relative'
+	},
+	mainHeaderText:{
+
+		fontWeight: 'bold',
+		fontSize: 17,
+		textAlign: 'center',
+		color: '#ffffff',
+		marginLeft:175,
+		position:'relative'
+	},
+	fullHeaderText:{
+
+		fontWeight: 'bold',
+		fontSize: 17,
+		textAlign: 'center',
+		color: '#ffffff',
+		marginLeft:120,
+		position:'relative',
+		paddingTop: 10
+	},
 	backButton:{
-		padding: 10,
+		padding: 5,
 		marginRight: 0,
 		position:'relative',
 		left:0
@@ -124,6 +156,15 @@ const styles = StyleSheet.create({
 		marginLeft: 90,
 		position:'relative',
 		right:0
+	},
+	buttonImage:{
+		width:40,
+		height:35,
+		paddingBottom:10
+	},
+	logoutImage:{
+		width:25,
+		height:25
 	}
 });
 //export default Header;
