@@ -61,6 +61,9 @@ const NavButtons = ({navigation}) => {
 	const onPredPress = () => {
 		navigation.navigate('Predict')
 	}
+	const onResPress = () => {
+		navigation.navigate('Results')
+	}
 
 	return(
 			<View style={styles.container}>
@@ -76,6 +79,12 @@ const NavButtons = ({navigation}) => {
 				>
 				<Text style={styles.buttonText}>Predict</Text>
 				</TouchableOpacity>
+				<TouchableOpacity
+					style={styles.button}
+					onPress={onResPress}
+				>
+				<Text style={styles.buttonText}>Results</Text>
+				</TouchableOpacity>
 			</View>
 		);
 }; 
@@ -89,7 +98,7 @@ const styles = StyleSheet.create({
 	},
 	button:{
 		height: 60,
-		width:200,
+		width:120,
 		borderRadius: 5,
 		justifyContent: 'center',
 		alignItems: 'center',

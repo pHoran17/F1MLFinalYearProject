@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput} from 'react-native';
 import Header from '../components/Header';
+import Firebase from '../api/Firebase';
+require('firebase/auth');
 
 
 const RegisterScreen = ({navigation}) => {
@@ -15,16 +17,16 @@ const RegisterScreen = ({navigation}) => {
 			alert("Passwords are not the same, Please reinsert password")
 			return
 		}
-		firebase.auth().createUserWithEmailAndPassword(email,password).then((response) => {
+		Firebase.auth().createUserWithEmailAndPassword(email,password).then((response) => {
 			const userid = response.user.userid; 
 			const data = {
 				id: userid,
 				email,
 				fullName,
 			};
-			const usersReference = firebase.firestore().collection('users')
+			const usersReference = Firebase.firestore().collection('users')
 			usersReference.doc(uid).set(data).then(() => {
-				navigation.navigate('Home',{user:data})
+				navigation.navigate('Main',{user:data})
 			})
 			.catch((err) => {
 				alert(err)
@@ -34,7 +36,7 @@ const RegisterScreen = ({navigation}) => {
 
 	return(
 		<>
-		<Header/>
+		<Header />
 		<View style={styles.container}>
 			<Text style={styles.fieldHeader}>Full Name</Text>
 			<TextInput 
@@ -42,7 +44,7 @@ const RegisterScreen = ({navigation}) => {
 				placeholder={'Full Name'}
 				placeholderTextColor='#080807'
 				onChangeText = {(text) => setFullName(text)}
-				value = {email}
+				value = {fullName}
 				underlineColorAndroid = "transparent"
 				autoCapitalize = "none"
 			/>
@@ -74,7 +76,7 @@ const RegisterScreen = ({navigation}) => {
 				secureTextEntry = {true}
 				placeholderTextColor='#080807'
 				onChangeText = {(text) => setConfirmPassword(text)}
-				value = {password}
+				value = {confirmPassword}
 				underlineColorAndroid = "transparent"
 				autoCapitalize = "none"
 			/>

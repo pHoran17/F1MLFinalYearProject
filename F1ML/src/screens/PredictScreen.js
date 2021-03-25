@@ -81,10 +81,10 @@ export default class PredictScreen extends React.Component
 			return(
 				<>
 					<View style={styles.header}>
-						<Header />
+						<Header {...this.props}/>
 					</View>
+					<View style={styles.resultsList}>
 					<FlatList 
-							style={styles.resultsList}
 							data={this.state.modelData}
 							keyExtractor={(item,index) => item.index.toString()}
 							renderItem={({item, index}) => (
@@ -106,7 +106,7 @@ export default class PredictScreen extends React.Component
 								</ListItem>
 							)}
 						/>
-					
+					</View>
 					<View style={styles.buttons}>
 						<NavButtons navigation={this.props.navigation}/>
 					</View>
@@ -118,7 +118,7 @@ export default class PredictScreen extends React.Component
 			//console.log(this.state.graphData);
 			return(
 				<>
-					<Header />
+					<Header {...this.props}/>
 					<View style={styles.container}>
 						<Text>Predict Screen</Text>
 					</View>
@@ -132,17 +132,21 @@ export default class PredictScreen extends React.Component
 
 }
 /*
-<View style={styles.container}>
-						<Image style={styles.graph} source={{uri: `data:image/png;base64,${this.state.graphData}`}}/>
-					</View>
+		<View style={styles.container}>
+			<Image style={styles.graph} source={{uri: `data:image/png;base64,${this.state.graphData}`}}/>
+		</View>
 */
+//Fix styling issues with header and list
 const styles = StyleSheet.create({
 	container:{
 		flex:10,
 		alignItems:'center'
 	},
+	header:{
+		flex:1
+	},
 	resultsList:{
-		flex:1,
+		flex:8,
 		
 	},
 	graph:{
@@ -152,7 +156,7 @@ const styles = StyleSheet.create({
 	buttons:{
 		flex:1,
 		bottom:0,
-		position:'absolute',
+		position:'relative',
 		marginBottom:10
 	}
 });

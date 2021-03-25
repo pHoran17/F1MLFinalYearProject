@@ -5,6 +5,9 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 //import {createStackNavigator} from 'react-navigation-stack';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
+import * as firebase from 'firebase';
+//import {firebaseConfig} from 'config';
+import Firebase from './src/api/Firebase';
 
 import StartScreen from './src/screens/StartScreen';
 import LoginScreen from './src/screens/LoginScreen';
@@ -12,8 +15,11 @@ import RegisterScreen from './src/screens/RegisterScreen';
 //import MainScreen from './src/screens/MainScreen';
 import ScreenMain from './src/screens/ScreenMain';
 import PredictScreen from './src/screens/PredictScreen';
+import ResultsScreen from './src/screens/ResultsScreen';
 
 import NavButtons from './src/components/NavButtons';
+
+//firebase.initializeApp(firebaseConfig);
 
 function App() {
   return (
@@ -24,6 +30,7 @@ function App() {
 			<Stack.Screen name="Register" component={RegisterScreen} />
 			<Stack.Screen name="Main" component={ScreenMain} />
 			<Stack.Screen name="Predict" component={PredictScreen} />
+			<Stack.Screen name="Results" component={ResultsScreen} />
 		</Stack.Navigator>
 	</NavigationContainer>
   );

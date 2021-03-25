@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput} from 'react-native';
 import Header from '../components/Header';
+//import firebase from 'firebase';
+import Firebase from '../api/Firebase';
+require('firebase/auth');
 
 //Alter screen layout, make inputs etc. into component for cleaner layout
-const LoginScreen = ({navigation}) => {
+/*const LoginScreen = ({navigation}) => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
@@ -60,7 +63,78 @@ const LoginScreen = ({navigation}) => {
 		</View>
 		</>
 	);
-};
+};*/
+export default class LoginScreen extends React.Component
+{
+	constructor(props)
+	{
+		super(props);
+		this.state = {
+			email: "",
+			password: ""
+		}
+	}
+
+	handleLogin = () => {
+		const {email, password} = this.state
+
+		Firebase.auth().signInWithEmailAndPassword(email, password)
+		.then(() => this.props.navigation.navigate('Main')).catch(error => console.log(error))
+	}
+
+	onFootLinkPress = () => {
+		this.props.navigation.navigate("Register")
+	}
+
+	render(){
+		return(
+			<>
+				<Header {...this.props}/>
+				<View style={styles.container}>
+					<Text style={styles.descriptText}>E-mail</Text>
+					<TextInput 
+						style={styles.input}
+						placeholder={'E-mail'}
+						placeholderTextColor='#080807'
+						onChangeText = {email => this.setState({email})}
+						value = {this.state.email}
+						underlineColorAndroid = "transparent"
+						autoCapitalize = "none"
+					/>
+					<Text style={styles.descriptText}>Password</Text>
+					<TextInput 
+						style={styles.input}
+						placeholder={'Password'}
+						secureTextEntry = {true}
+						placeholderTextColor='#080807'
+						onChangeText = {password => this.setState({password})}
+						value = {this.state.password}
+						underlineColorAndroid = "transparent"
+						autoCapitalize = "none"
+					/>
+					<TouchableOpacity 
+						style={styles.button}
+						onPress={this.handleLogin}
+					>
+						<Text>Login</Text>
+					</TouchableOpacity>
+					<TouchableOpacity>
+						<View style={styles.footSection}>
+							<Text style={styles.footText}>
+								Don't have an account?
+							</Text>
+							<Text style={styles.footLink} 
+								onPress={this.onFootLinkPress}>
+									Register here!
+							</Text>
+						</View>
+					</TouchableOpacity>
+				</View>
+			</>
+		)
+	}
+	
+}
 
 const styles = StyleSheet.create({
 	container:{
@@ -111,4 +185,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default LoginScreen;
+//export default LoginScreen;

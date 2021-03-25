@@ -92,7 +92,7 @@ const MainScreen = () => {
 	//console.log(items);
 	return(
 		<>
-			<Header/>
+			<Header {...this.props}/>
 			<View style={styles.clockContainer}>
 				<Text style={styles.raceName}>Next Race: {[nextTrack]}</Text>
 				<Text style={styles.raceTime}>Starts in: {[currentTime]}</Text>

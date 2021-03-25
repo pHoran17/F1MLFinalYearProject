@@ -69,7 +69,7 @@ export default class ScreenMain extends React.Component{
 					const timeD = this.state.timeData;
 					const raceD = this.state.raceData;
 					const {nav} = this.props.navigation;
-					//console.log(this.props);
+					console.log(this.props);
 					const i = 0;
 					//Convert raceD to array and map text
 					//const raceArr = [raceD];
@@ -79,7 +79,7 @@ export default class ScreenMain extends React.Component{
 					}
 					return(
 						<>
-							<Header/>
+							<Header {...this.props}/>
 							<View style={styles.clockContainer}>
 								<Text style={styles.raceName}>Next Race: {timeD.track}</Text>
 								<Text style={styles.raceTime}>Starts in: {timeD.time}</Text>

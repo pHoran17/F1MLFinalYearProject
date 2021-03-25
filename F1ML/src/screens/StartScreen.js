@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Header from '../components/Header';
 import StartButtons from '../components/StartButtons';
+import Firebase from '../api/Firebase';
+import firebase from 'firebase';
+require('firebase/auth');
 
 /*const StartScreen = ({navigation}) => {
 	return (
@@ -44,13 +47,36 @@ const styles = StyleSheet.create({
 		color: '#ffffff'
 	}
 });
+//const { FireBase } = require('../api/Firebase');	
+export default class StartScreen extends React.Component{
+	
+	constructor(props){
+		super(props);
+	}
+	componentDidMount(){
+		this.checkifLoggedIn();
+	}
 
-export default class StartScreen extends Component{
+	checkifLoggedIn = () =>{
+		//const {email, password} = this.state;
+		Firebase.auth().onAuthStateChanged(function(user){
+			if(user)
+			{
+				this.props.navigation.navigate('Main');
+			} 
+			else{
+				alert('Not signed in');
+			}
+		}.bind(this)
+	);
+	}
+	
 	render()
 	{
+		//console.log(this.props)
 		return(
 		<>
-		<Header/>
+		<Header {...this.props}/>
 		<View style = {styles.container}>
 			<TouchableOpacity
 				style={styles.button}

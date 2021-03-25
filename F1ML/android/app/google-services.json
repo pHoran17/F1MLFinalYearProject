@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "942619067176",
+    "project_id": "f1ml-c8d00",
+    "storage_bucket": "f1ml-c8d00.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:942619067176:android:4088b8b45bf9b44b63461d",
+        "android_client_info": {
+          "package_name": "com.pHoran.f1ml"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "942619067176-sa5k665l9k6o3aut7v856s6igtgg6aq7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC16yGZRRSnqpwmjbKiSa-e_WhvoYpRMCk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "942619067176-sa5k665l9k6o3aut7v856s6igtgg6aq7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
