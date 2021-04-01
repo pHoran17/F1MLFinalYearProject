@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import NavButtons from '../components/NavButtons';
 import RaceClock from '../components/RaceClock';
 import LastRace from '../components/LastRace';
+import Countdown from 'react-native-countdown-component';
 import axios from 'axios';
 
 export default class ScreenMain extends React.Component{
@@ -39,7 +40,7 @@ export default class ScreenMain extends React.Component{
 				timeData: res1.data,
 				loading: false
 			});
-			//console.log(this.state.raceData);
+			console.log(this.state.timeData.time);
 		})).catch(errors => {
 			console.error(errors);
 		})
@@ -71,8 +72,10 @@ export default class ScreenMain extends React.Component{
 			//console.log(this.state.raceData[0]);
 					const timeD = this.state.timeData;
 					const raceD = this.state.raceData;
+					const cdTime = new Date(timeD.time).getTime();
+					const tLabels = {d: 'Days', h: 'Hours', m: 'Minutes', s: 'Seconds'};
 					const {nav} = this.props.navigation;
-					//console.log(this.props);
+					console.log('Time: ' + cdTime);
 					const i = 0;
 					//Convert raceD to array and map text
 					//const raceArr = [raceD];
@@ -85,7 +88,10 @@ export default class ScreenMain extends React.Component{
 							<Header {...this.props}/>
 							<View style={styles.clockContainer}>
 								<Text style={styles.raceName}>Next Race: {timeD.track}</Text>
-								<Text style={styles.raceTime}>Starts in: {timeD.time}</Text>
+								<Countdown until={cdTime}
+								timeToShow={['D', 'H', 'M', 'S']}
+								timeLabels={tLabels}
+								size={10}/>
 							</View>
 							<View style={styles.resContainer}>
 								<Text style={styles.lastRaceTitle}>Abu Dhabi 2020 Race Results</Text>

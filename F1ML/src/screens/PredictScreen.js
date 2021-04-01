@@ -77,7 +77,7 @@ export default class PredictScreen extends React.Component
 	{
 		if(this.state.graphData.length !== 0){
 			
-			//console.log(this.state.modelData);
+			console.log(this.state.modelData);
 			return(
 				<>
 					<View style={styles.header}>
@@ -90,6 +90,9 @@ export default class PredictScreen extends React.Component
 							renderItem={({item, index}) => (
 								<ListItem>
 									<ListItem.Content>
+										<Text>
+											Driver: {item.driver}
+										</Text>
 										<Text>
 											Results: {item.results}
 										</Text>

@@ -8,6 +8,7 @@ import base64 from 'base-64';
 import Firebase, {database} from '../api/Firebase';
 //import FBDatabase from '../api/FBDatabase';
 import firebase from 'firebase';
+import DropDownPicker from 'react-native-dropdown-picker';
 require('firebase/auth');
 require('firebase/database');
 //const database = Firebase.database();
@@ -22,34 +23,175 @@ export default class ResultsScreen extends React.Component
 		this.state =
 		{
 			resultData: [],
+            pickerList: [],
+            race: "Abu Dhabi Grand Prix 2012",
 			isloading: true
 		};
 	}
-    
+    /*getRaceKey(keyRace){
+        const race = this.state.race;
+        keyRace.forEach((dbRace) => {
+            if(race == dbRace.race){
+                return dbRace.key;
+            }
+        })
+    }
+    */
 	async componentDidMount()
 	{
-			//const url1 = 'http://192.168.0.17:5000/results';
+			const url1 = 'http://192.168.0.17:5000/res';
 			//const url2 = 'http://192.168.0.17:5000/graph';
 			//const req1 = axios.get(url1);
 			//const req2 = axios.get(url2);
-            Firebase.database().ref('/results/data').on('value', querySnapshot => {
-                let data = querySnapshot.val() ? querySnapshot.val() : {};
-                let response = {...data};
-                //console.log(response);
-                this.setState({
-                    resultData: response
+            const race = this.state.race;
+            //const refer = await Firebase.database().ref('results');
+            const items = new Array();
+            const pickerItems = new Array();
+            //const racePair = new Object();
+            /*refer.on('value',(function (snapshot) 
+            {
+                //console.log(snapshot.val());
+                if(snapshot.exists())
+                {
+                    //console.log(snapshot.val());
+                    snapshot.forEach(function (child) 
+                    {
+                        //console.log(child.val().race[0]);
+                        //console.log(race);
+                        const currentRace = child.val().race[0];
+                        //console.log(correctRace == race);
+                        if(currentRace == race)
+                        {
+                            const key = child.key;
+                            const data = currentRace;
+                            //console.log(data);
+                            items.push(
+                            {
+                                key: key,
+                                race: data
+                            });
+                            
+                         
+                        }
+                        pickerItems.push(
+                            {
+                                label: currentRace,
+                                value: child.key,
+                            });
+                        
+                    });
+                }
+                else
+                {
+                    alert("Failed to retrieve data");
+                }
+            })
+            );
+            if(pickerItems.length !== 0)
+            {
+                if(items.length !== 0)
+                {
+                    //console.log(items);
+                    const searchPair = JSON.stringify(items);
+                    const searchText = searchPair.substring(1, searchPair.length-1);
+                    const searchObject = JSON.parse(searchText);
+                    //console.log(searchObject);
+                    const sKey = searchObject.key;
+                    const rVal = searchObject.race;
+                    //console.log("Key " + sKey + " RaceSearch " + rVal);
+                    //const resQuery = refer.child(searchObject.key).orderByChild("race").equalTo(searchObject.race);
+                    const resQuery = await refer.child(searchObject.key);
+                    const res = new Array();
+                    resQuery.once('value', function(snapshot){
+                        if(snapshot.exists()){
+                            //console.log(snapshot);
+                            //console.log(pickerItems);
+                            //Create for loop in forEach to extract values from each array for res array, assign output to state
+                            //console.log(snapshot.val().driver);
+                            res.push({
+                                pos:snapshot.val().positionText,
+                                driver:snapshot.val().driver,
+                                laps:snapshot.val().laps,
+                                time:snapshot.val().time_x
+
+                            });
+                            //console.log(res);
+                        }
+                    });
+                    this.setState={
+                        resultData: res,
+                        pickerList: pickerItems
+                    };
+                    //console.log(this.state.resultData);
+                }
+                else
+                {
+                    alert("Unable to retrieve data, array is null");
+                }
+            }
+            else
+            {
+                alert("Unable to retrieve results");
+            }
+            */
+            
+            
+            
+            
+            //const searchKey = searchPair.key;
+            //console.log(searchKey);
+            
+            //const searchKey = this.getRaceKey(keyRace);
+            //console.log(keyRace.key);
+            /*resQuery.on('value', (function (snapshot) {
+                if(snapshot.exists())
+                {
+                    console.log(snapshot);
+                    
+                    this.setState = ({
+                        resultData: snapshot.toJSON(),
+                        isloading: false
+                    })
+                }
+                else{
+                    alert("Failed to retrieve data");
+                }
+              
+            }));*/
+            /*refer.child('results').orderByKey().endAt(race).on('value',(function (snapshot) 
+            {
+                if(snapshot.exists()){
+                    console.log(snapshot.val());
+                    snapshot.forEach(function (child) {
+                        //console.log(child.val())
+                    })
+                }
+                else{
+                    console.log("Failed to retrieve data")
+                }
+            })
+            );*/
+
+            //console.log(refer);
+            /*refer.child("results").orderByChild('race')
+            .on("value", function(snapshot){
+                //let data = snapshot.val() ? snapshot.val() : {};
+                snapshot.forEach(function(child) {
+                    console.log(child.val())
                 });
-            });
-            /*
-            const year = 2020;
+                
+            });*/
+            /*const race = this.state.race;
             Firebase.database().ref('/results')
             .child('data')
-            .orderByChild('year')
-            .equalTo(year)
-            .once('child_added').then(querySnapshot => {
+            .orderByChild('race')
+            .equalTo(race)
+            .once('value').then(querySnapshot => {
                 const res = [];
-                querySnapshot.array.forEach(element => {
+                querySnapshot.forEach(element => {
                     res = [element.val(), ...res];
+                }).catch(function(error){
+                    console.log(error);
                 });
                 console.log(res);
             });*/
@@ -73,6 +215,28 @@ export default class ResultsScreen extends React.Component
 				console.error(errors);
 			}))
 			*/
+            const pRequest = {
+                data:{
+                    race: this.state.race
+                },
+                headers:{
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                responseType: 'json',
+                url: url1
+            };
+            axios.post(url1, pRequest).then(response => {
+                //console.log(response.data);
+                /*this.setState = ({resultData: response.data}, () => {
+                    console.log(this.state.resultData);
+                });*/
+                this.changeResults(response.data.data);
+                //console.log(this.state.resultData);
+            }).catch(function(error){
+                console.log(error);
+            });
 			/*axios.get(url1).then(res => {
 				//console.log(res.data.data);
 				const modelReq = res.data.data; 
@@ -97,7 +261,14 @@ export default class ResultsScreen extends React.Component
 
 			
 	}
-
+    async changeResults(data){
+        await this.setState({resultData: data});
+        console.log(this.state.resultData);
+    }
+    async changeRace(data){
+        await this.setState({race: data});
+        console.log(this.state.race);
+    }
 	render()
 	{
 		if(this.state.resultData.length !== 0){
@@ -108,6 +279,32 @@ export default class ResultsScreen extends React.Component
 					<View style={styles.header}>
 						<Header {...this.props}/>
 					</View>
+                    <View style={styles.dropdownContainer}>
+                        <DropDownPicker
+                            items={[
+                                {label: 'Abu Dhabi 2020', value:'Abu Dhabi Grand Prix 2020'},
+                                {label: 'Sakhir 2020', value:'Sakhir Grand Prix 2020'},
+                                {label: 'Bahrain 2020', value:'Bahrain Grand Prix 2020'},
+                                {label: 'Turkey 2020', value:'Turkish Grand Prix 2020'},
+                                {label: 'Imola 2020', value:'Emilia Romagna Grand Prix 2020'},
+                                {label: 'Portugal 2020', value:'Portuguese Grand Prix 2020'},
+                                {label: 'Germany 2020', value:'Eifel Grand Prix 2020'},
+                                {label: 'Russian 2020', value:'Russian Grand Prix 2020'},
+                                {label: 'Mugello 2020', value:'Tuscan Grand Prix 2020'},
+                                {label: 'Monza 2020', value:'Italian Grand Prix 2020'},
+                                {label: 'Belgium 2020', value:'Belgian Grand Prix 2020'},
+                                {label: 'Spain 2020', value:'Spanish Grand Prix 2020'},
+                                {label: '70th Anniversary Grand Prix 2020', value:'70th Anniversary Grand Prix 2020'},
+                                {label: 'Great Britain 2020', value:'British Grand Prix 2020'},
+                                {label: 'Hungary 2020', value:'Hungarian Grand Prix 2020'},
+                                {label: 'Styria 2020', value:'Styrian Grand Prix 2020'},
+                                {label: 'Austria 2020', value:'Austrian Grand Prix 2020'},
+
+                        ]}
+                            style={styles.dropdown}
+                            onChangeItem={item => this.changeRace(item)}
+                        />
+                    </View>
 					<View style={styles.resultsList}>
 					<FlatList 
 							data={this.state.resultData}
@@ -117,7 +314,7 @@ export default class ResultsScreen extends React.Component
 									<ListItem.Content>
                                     <ListItem.Title style={styles.resultTitle}>{item.positionText}</ListItem.Title>
 												<Text style={styles.driver}>{item.driver}</Text>
-												<Text style={styles.constructor}>{item.name_y}</Text>
+												
 												<Text style={styles.points}>{item.points}</Text>
 												<Text style={styles.time}>{item.time_x}</Text>
 									</ListItem.Content>
@@ -133,10 +330,11 @@ export default class ResultsScreen extends React.Component
 		}
 		else
 		{
-			//console.log(this.state.graphData);
+			//console.log(this.state.resultData);
 			return(
 				<>
 					<Header {...this.props}/>
+                    
 					<View style={styles.container}>
 						<Text>Loading</Text>
 					</View>
@@ -149,13 +347,53 @@ export default class ResultsScreen extends React.Component
 	}
 
 }
+/*
+<View style={styles.dropdownContainer}>
+                        <DropDownPicker
+                            items={[
+                                {label: 'Abu Dhabi 2020', value:'Abu Dhabi Grand Prix 2020'},
+                                {label: 'Sakhir 2020', value:'Sakhir Grand Prix 2020'},
+                                {label: 'Bahrain 2020', value:'Bahrain Grand Prix 2020'},
+                                {label: 'Turkey 2020', value:'Turkish Grand Prix 2020'},
+                                {label: 'Imola 2020', value:'Emilia Romagna Grand Prix 2020'},
+                                {label: 'Portugal 2020', value:'Portuguese Grand Prix 2020'},
+                                {label: 'Germany 2020', value:'Eifel Grand Prix 2020'},
+                                {label: 'Russian 2020', value:'Russian Grand Prix 2020'},
+                                {label: 'Mugello 2020', value:'Tuscan Grand Prix 2020'},
+                                {label: 'Monza 2020', value:'Italian Grand Prix 2020'},
+                                {label: 'Belgium 2020', value:'Belgian Grand Prix 2020'},
+                                {label: 'Spain 2020', value:'Spanish Grand Prix 2020'},
+                                {label: '70th Anniversary Grand Prix 2020', value:'70th Anniversary Grand Prix 2020'},
+                                {label: 'Great Britain 2020', value:'British Grand Prix 2020'},
+                                {label: 'Hungary 2020', value:'Hungarian Grand Prix 2020'},
+                                {label: 'Styria 2020', value:'Styrian Grand Prix 2020'},
+                                {label: 'Austria 2020', value:'Austrian Grand Prix 2020'}
 
+                        ]}
+                        defaultValue={this.state.race}
+                        style={styles.dropdown}
+                        onChangeItem={item => this.setState({
+                            race: item.value
+                        })}
+                        />
+                    </View>
+*/
 //Fix styling issues with header and list
 const styles = StyleSheet.create({
 	container:{
 		flex:10,
 		alignItems:'center'
 	},
+    dropdownContainer:{
+        flex:1,
+        alignItems:'center',
+        marginTop: 20
+    },
+    dropdown:{
+        padding:10,
+        width: 200,
+        height: 100
+    },
 	header:{
 		flex:1
 	},
