@@ -5,7 +5,7 @@ import Firebase from '../api/Firebase';
 require('firebase/auth');
 
 
-const registerScreen = ({navigation}) => {
+/*const registerScreen = ({navigation}) => {
 	const [email, setEmail] = useState('')
 	const [fullName, setFullName] = useState('')
 	const [password, setPassword] = useState('')
@@ -21,15 +21,15 @@ const registerScreen = ({navigation}) => {
 			const userid = response.user.userid; 
 			const data = {
 				id: userid,
-				email,
-				fullName,
+				email: email,
+				fullName: fullName,
 			};
 			const usersReference = Firebase.firestore().collection('users')
 			usersReference.doc(uid).set(data).then(() => {
 				navigation.navigate('Main',{user:data})
 			})
 			.catch((err) => {
-				alert(err)
+				alert("Failed to register: " + err);
 			});
 		}) 
 	}
@@ -89,7 +89,8 @@ const registerScreen = ({navigation}) => {
 		</View>
 		</>
 	);
-};
+};*/
+
 export default class RegisterScreen extends React.Component{
 	constructor(props){
 		super(props);
@@ -105,19 +106,42 @@ export default class RegisterScreen extends React.Component{
 			alert("Passwords are not the same, Please reinsert password")
 			return
 		}
-		Firebase.auth().createUserWithEmailAndPassword(email,password).then((response) => {
+		//console.log(this.state.email);
+		//expand error checking to include specific checks for invalid email and existing email
+		Firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then((response) => {
 			const userid = response.user.userid; 
 			const data = {
 				id: userid,
-				email,
-				fullName,
+				email: this.state.email,
+				fullName: this.state.fullName,
 			};
 			const usersReference = Firebase.firestore().collection('users')
 			usersReference.doc(uid).set(data).then(() => {
 				navigation.navigate('Main',{user:data})
 			})
 			.catch((err) => {
-				alert(err)
+				//alert(err)
+				const eCode = err.code;
+				const eMessage = err.message;
+
+				if(eCode === "auth/weak-password")
+				{
+					alert("Failed to Register: " + eMessage);
+				}
+				else if(eCode === "auth/email-already-in-use")
+				{
+					alert(" Failed to Register: " + eMessage);
+				}
+				else if(eCode === "auth/invalid-email")
+				{
+					alert("Failed to Register: " + eMessage + " Please ensure that @ is included when entering email address");
+				}
+				else if(err == "ReferenceError: Can't find variable: uid"){
+					console.log('uid null')
+				}
+				else{
+					alert(err);
+				}
 			});
 		}) 
 	}

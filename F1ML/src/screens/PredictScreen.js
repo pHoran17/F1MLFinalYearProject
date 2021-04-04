@@ -28,9 +28,9 @@ export default class PredictScreen extends React.Component
 			const req1 = axios.get(url1);
 			const req2 = axios.get(url2);
 
-
+			//Rewrite to retrieve data from Firebase
 			/*
-			//Causes Unhandled promis rejection when splitting responses, use individual calls instead
+			//Causes Unhandled promise rejection when splitting responses, use individual calls instead
 			axios.all([req1, req2]).then(axios.spread((...responses) => {
 				const res1 = responses[0]
 				const res2 = responses[1];
@@ -77,38 +77,46 @@ export default class PredictScreen extends React.Component
 	{
 		if(this.state.graphData.length !== 0){
 			
-			console.log(this.state.modelData);
+			//console.log(this.state.modelData);
 			return(
 				<>
 					<View style={styles.header}>
 						<Header {...this.props}/>
 					</View>
+					<View style={styles.titleContainer}>
+						<Text style={styles.predPageTitle}>2020 F1 Season Podium Predcitions</Text>
+					</View>
 					<View style={styles.resultsList}>
-					<FlatList 
-							data={this.state.modelData}
-							keyExtractor={(item,index) => item.index.toString()}
-							renderItem={({item, index}) => (
-								<ListItem>
-									<ListItem.Content>
-										<Text>
-											Driver: {item.driver}
-										</Text>
-										<Text>
-											Results: {item.results}
-										</Text>
-										<Text>
-											Podium: {item.podium}
-										</Text>
-										<Text>
-											Actual Podium: {item.actual}
-										</Text>
-										<Text>
-											Predicted Podium: {item.prediction}
-										</Text>
-									</ListItem.Content>
-								</ListItem>
-							)}
-						/>
+						<View style={styles.predListHead}>
+										<Text style={styles.listHeadText}>Driver</Text>
+										<Text style={styles.listHeadRes}>Results</Text>
+										<Text style={styles.listHeadActPod}>Actual</Text>
+										<Text style={styles.listHeadPredPod}>Predicted</Text>
+						</View>
+						<FlatList 
+								data={this.state.modelData}
+								keyExtractor={(item,index) => item.index.toString()}
+								renderItem={({item, index}) => (
+									<ListItem>
+										<ListItem.Content>
+											<View style ={styles.predictItem}>
+												<Text style={styles.driverItem}>
+													{item.driver}
+												</Text>
+												<Text style={styles.resultItem}>
+													{item.results}
+												</Text>
+												<Text style={styles.actItem}>
+													{item.actual}
+												</Text>
+												<Text style={styles.predItem}>
+													{item.prediction}
+												</Text>
+											</View>
+										</ListItem.Content>
+									</ListItem>
+								)}
+							/>
 					</View>
 					<View style={styles.buttons}>
 						<NavButtons navigation={this.props.navigation}/>
@@ -123,7 +131,7 @@ export default class PredictScreen extends React.Component
 				<>
 					<Header {...this.props}/>
 					<View style={styles.container}>
-						<Text>Predict Screen</Text>
+						<Text>Loading...</Text>
 					</View>
 					<View style={styles.buttons}>
 						<NavButtons navigation={this.props.navigation}/>
@@ -148,9 +156,48 @@ const styles = StyleSheet.create({
 	header:{
 		flex:1
 	},
+	titleContainer:{
+		flex:1,
+		alignItems:'center'
+	},
+	predPageTitle:{
+		fontSize:20,
+		fontWeight:'bold',
+		marginTop:10
+	},
 	resultsList:{
-		flex:8,
+		flex:7,
 		
+	},
+	predListHead:{
+		flexDirection:'row'
+	},
+	listHeadText:{
+		marginLeft:20
+	},
+	listHeadRes:{
+		marginLeft:80
+	},
+	listHeadActPod:{
+		marginLeft:60
+	},
+	listHeadPredPod:{
+		marginLeft:20
+	},
+	predictItem:{
+		flexDirection:'row'
+	},
+	driverItem:{
+		marginLeft:5
+	},
+	resultItem:{
+		marginLeft:25
+	},
+	actItem:{
+		marginLeft:25
+	},
+	predItem:{
+		marginLeft:30
 	},
 	graph:{
 		width:400,

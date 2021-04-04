@@ -77,9 +77,34 @@ export default class LoginScreen extends React.Component
 
 	handleLogin = () => {
 		const {email, password} = this.state
-
+		//Expand error checking to include checks for specific codes (valid email etc)
 		Firebase.auth().signInWithEmailAndPassword(email, password)
-		.then(() => this.props.navigation.navigate('Main')).catch(error => console.log(error))
+		.then(() => this.props.navigation.navigate('Main')).catch(error => {
+			//console.log(error)
+			const eCode = error.code;
+			const eMessage = error.message;
+			if(eCode === "auth/invalid-email")
+			{
+				alert("Failed to Sign In: " + eMessage + " Make sure that email address includes @");
+			}
+			else if(eCode === "auth/user-not-found")
+			{
+				alert("Failed to Sign In: " + eMessage + " Please register using the link below");
+			}
+			else if(eCode === "auth/wrong-password")
+			{
+				alert("Failed to Sign In: " + eMessage);
+			}
+			else
+			{
+				alert("Failed to Sign In: " + eMessage);
+			}
+			
+			//console.log(eCode);
+			//console.log(eMessage);
+			
+		})
+			
 	}
 
 	onFootLinkPress = () => {

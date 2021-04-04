@@ -51,6 +51,7 @@ import {useNavigation} from '@react-navigation/native';
 	}
 
 }*/
+//Component that provides buttons for navigating to specific pages
 const NavButtons = ({navigation}) => {
 	//console.log(navigation)
 
@@ -64,7 +65,7 @@ const NavButtons = ({navigation}) => {
 	const onResPress = () => {
 		navigation.navigate('Results')
 	}
-
+	//Add icons for each button
 	return(
 			<View style={styles.container}>
 				<TouchableOpacity

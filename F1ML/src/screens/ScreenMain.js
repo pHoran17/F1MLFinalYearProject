@@ -31,7 +31,7 @@ export default class ScreenMain extends React.Component{
 			headers: {'Access-Control-Cross-Origin': '*'}
 		};
 
-		axios.all([req1, req2]).then(axios.spread((...responses) => {
+		await axios.all([req1, req2]).then(axios.spread((...responses) => {
 			const res1 = responses[0];
 			const res2 = responses[1];
 			//console.log(res1, res2);
@@ -46,7 +46,7 @@ export default class ScreenMain extends React.Component{
 		})
 	}
 	//Unused, flatlist used instead in render
-	renderItems = ({item},{i}) => {
+	/*renderItems = ({item},{i}) => {
 		//const index = i;
 		console.log(i);
 		return(
@@ -62,7 +62,7 @@ export default class ScreenMain extends React.Component{
 					</ListItem.Content>
 			</ListItem>
 		);
-	}
+	}*/
 	//Method for rendering screen, called first in lifecycle
 	render()
 	{	

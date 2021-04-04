@@ -65,7 +65,7 @@ export default class StartScreen extends React.Component{
 				this.props.navigation.navigate('Main');
 			} 
 			else{
-				alert('Not signed in');
+				console.log("Not Logged In")
 			}
 		}.bind(this)
 	);

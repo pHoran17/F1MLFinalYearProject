@@ -24,7 +24,7 @@ export default class ResultsScreen extends React.Component
 		{
 			resultData: [],
             pickerList: [],
-            race: "Abu Dhabi Grand Prix 2012",
+            race: "Abu Dhabi Grand Prix 2020",
 			isloading: true
 		};
 	}
@@ -320,7 +320,7 @@ export default class ResultsScreen extends React.Component
         //const newResults = setResults(data);
         //console.log(this.state.race);
         //await this.setState({race:data});
-        console.log(this.state.race);
+        //console.log(this.state.race);
         const crUrl = 'http://192.168.0.17:5000/res';
         const raceRequest = {
             data:{
@@ -348,7 +348,8 @@ export default class ResultsScreen extends React.Component
 		if(this.state.resultData.length !== 0){
 			
 			//console.log(this.state.pickerList);
-            console.log(this.state.race);
+            //Add points to dataframe, clean \n results to be DNF where a driver failed to finish
+            //console.log(this.state.resultData);
 			return(
 				<>
 					<View style={styles.header}>
@@ -362,17 +363,27 @@ export default class ResultsScreen extends React.Component
                         />
                     </View>
 					<View style={styles.resultsList}>
+                    <Text style={styles.raceTitle}>{this.state.race} Race Results</Text>
+								<View style={styles.listHead}>
+									<Text style={styles.listHeadText}>Pos</Text>
+									<Text style={styles.listHeadText}>Driver</Text>
+									<Text style={styles.listHeadConstruct}>Constructor</Text>
+									<Text style={styles.listHeadText}>Points</Text>
+									<Text style={styles.listHeadText}>Time</Text>
+								</View>
 					<FlatList 
 							data={this.state.resultData}
 							keyExtractor={(item,index) => item.index.toString()}
 							renderItem={({item, index}) => (
 								<ListItem>
 									<ListItem.Content>
-                                    <ListItem.Title style={styles.resultTitle}>{item.positionText}</ListItem.Title>
-												<Text style={styles.driver}>{item.driver}</Text>
-												<Text style={styles.constructor}>{item.constructor}</Text>
-												<Text style={styles.points}>{item.points}</Text>
-												<Text style={styles.time}>{item.time_x}</Text>
+                                        <View style={styles.resultListContent}>
+                                                <ListItem.Title style={styles.resultTitle}>{item.positionText}</ListItem.Title>
+                                                    <Text style={styles.driver}>{item.driver}</Text>
+                                                    <Text style={styles.constructor}>{item.constructor}</Text>
+                                                    <Text style={styles.points}>{item.points}</Text>
+                                                    <Text style={styles.time}>{item.time_x}</Text>
+                                        </View>
 									</ListItem.Content>
 								</ListItem>
 							)}
@@ -442,13 +453,14 @@ const styles = StyleSheet.create({
 	},
     dropdownContainer:{
         flex:1,
-        alignItems:'center',
+        alignItems:'flex-start',
         marginTop: 20
     },
     dropdown:{
         padding:10,
-        width: 200,
-        height: 100
+        marginLeft:30,
+        width: 300,
+        height: 80
     },
 	header:{
 		flex:1
@@ -457,25 +469,61 @@ const styles = StyleSheet.create({
 		flex:8,
 		
 	},
+    listHead:{
+        flexDirection:'row',
+        padding: 10
+    },
+    raceTitle:{
+        alignItems:'center',
+        paddingTop:10,
+        marginLeft:80
+    },
+    listHeadText:{
+        marginLeft:10,
+		paddingTop:5,
+		paddingRight:10,
+        marginRight: 5
+    },
+    listHeadConstructor:{
+        paddingTop:5,
+        marginTop:10,
+        marginLeft:10,
+        marginRight:15,
+        paddingRight:10
+    },
+    resultTitle:{
+        alignItems:'center',
+		fontWeight:'bold',
+		paddingRight: 5,
+		paddingTop: 5
+    },
+    driver:{
+        marginLeft:10,
+        paddingTop:5
+    },
     constructor:{
 		alignItems:'center',
 		paddingTop: 5,
-		paddingLeft: 15,
+		marginLeft: 15,
 		paddingRight: 10
 	},
 	points:{
 		alignItems:'center',
 		paddingTop: 5,
-		paddingLeft: 10,
+		marginLeft: 10,
 		paddingRight: 15
 	},
 	time:{
 		alignItems:'center',
 		paddingTop: 5,
-		paddingLeft: 15
+		marginLeft: 15
 	},
+    resultListContent:{
+        flexDirection: 'row',
+		alignItems: 'center'
+    },
 	buttons:{
-		flex:2,
+		flex:1,
 		bottom:0,
 		position:'relative',
 		marginBottom:10,
