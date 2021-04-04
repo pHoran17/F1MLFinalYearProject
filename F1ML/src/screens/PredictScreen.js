@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
 		alignItems:'center'
 	},
 	header:{
-		flex:1
+		flex:2
 	},
 	titleContainer:{
 		flex:1,

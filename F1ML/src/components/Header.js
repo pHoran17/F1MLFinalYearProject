@@ -44,7 +44,7 @@ export default class Header extends React.Component {
 							onPress={this.navToPrevPage}
 						>
 							<Image style={styles.buttonImage} source={require('../icons/back.png')}/>
-							<Text>Back</Text>
+							<Text style={styles.backText}>Back</Text>
 					</TouchableOpacity>
 					<Text style={styles.fullHeaderText}>F1ML</Text>
 					<TouchableOpacity 
@@ -52,7 +52,7 @@ export default class Header extends React.Component {
 							onPress={this.signOut}
 						>
 							<Image style={styles.logoutImage} source={require('../icons/logout.png')}/>
-							<Text>Logout</Text>
+							<Text style={styles.logoutText}>Logout</Text>
 					</TouchableOpacity>
 				</View>
 			);
@@ -67,7 +67,7 @@ export default class Header extends React.Component {
 							onPress={this.signOut}
 						>
 							<Image style={styles.logoutImage} source={require('../icons/logout.png')}/>
-							<Text>Logout</Text>
+							<Text style={styles.logoutText}>Logout</Text>
 					</TouchableOpacity>
 				</View>
 			);
@@ -89,6 +89,7 @@ export default class Header extends React.Component {
 							onPress={this.navToPrevPage}
 						>
 							<Image style={styles.buttonImage} source={require('../icons/back.png')}/>
+							<Text style={styles.backText}>Back</Text>
 					</TouchableOpacity>
 					<Text style={styles.loginHeaderText}>F1ML</Text>
 				</View>
@@ -100,7 +101,7 @@ export default class Header extends React.Component {
 
 const styles = StyleSheet.create({
 	header:{
-		flex: 1,
+		flex: 2,
 		flexDirection:'row',
 		alignSelf:'stretch',
 		paddingTop: 10,
@@ -116,6 +117,7 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		color: '#ffffff',
 		marginLeft:175,
+		marginTop:50,
 		position:'relative'
 	},
 	loginHeaderText:{
@@ -125,6 +127,14 @@ const styles = StyleSheet.create({
 		color: '#ffffff',
 		marginLeft:110,
 		position:'relative'
+	},
+	backText:{
+		color:'#ffffff',
+		padding: 5
+	},
+	logoutText:{
+		color:'#ffffff',
+		padding: 5
 	},
 	mainHeaderText:{
 
@@ -142,18 +152,21 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		color: '#ffffff',
 		marginLeft:120,
+		marginTop:60,
 		position:'relative',
 		paddingTop: 10
 	},
 	backButton:{
 		padding: 5,
 		marginRight: 0,
+		marginTop: 50,
 		position:'relative',
 		left:0
 	},
 	logoutButton:{
 		padding: 10,
 		marginLeft: 90,
+		marginTop: 50,
 		position:'relative',
 		right:0
 	},

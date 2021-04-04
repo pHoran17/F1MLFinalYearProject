@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {createAppContainer} from "react-navigation";
 import {createStackNavigator} from 'react-navigation-stack';
 //import ScreenMain from '../screens/ScreenMain';
@@ -72,18 +72,21 @@ const NavButtons = ({navigation}) => {
 					style={styles.button}
 					onPress={onHomePress}
 				>
+				<Image style={styles.mainImage} source={require('../icons/home.png')}/>
 				<Text style={styles.buttonText}>Main</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={styles.button}
 					onPress={onPredPress}
 				>
+				<Image style={styles.predictImage} source={require('../icons/predict.png')}/>
 				<Text style={styles.buttonText}>Predict</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={styles.button}
 					onPress={onResPress}
 				>
+				<Image style={styles.resultsImage} source={require('../icons/results.png')}/>
 				<Text style={styles.buttonText}>Results</Text>
 				</TouchableOpacity>
 			</View>
@@ -106,6 +109,18 @@ const styles = StyleSheet.create({
 		backgroundColor: '#ed1005',
 		padding: 30,
 		color: '#ffffff'
+	},
+	mainImage:{
+		height:35,
+		width:30
+	},
+	predictImage:{
+		height:35,
+		width:30
+	},
+	resultsImage:{
+		height:35,
+		width:50
 	},
 	buttonText:{
 		fontSize:18,
