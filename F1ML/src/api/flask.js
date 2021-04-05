@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 export default axios.create({
-	baseURL: 'http://192.168.0.17:5000',
+	baseURL: 'https://f1ml.herokuapp.com',
 	headers: {
 		'Access-Control-Allow-Origin': '*',
 		'Accept': 'application/json',

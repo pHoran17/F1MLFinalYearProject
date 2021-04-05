@@ -39,8 +39,8 @@ export default class ResultsScreen extends React.Component
     */
 	async componentDidMount()
 	{
-			const url1 = 'http://192.168.0.17:5000/res';
-			const url2 = 'http://192.168.0.17:5000/raceList';
+			const url1 = 'https://f1ml.herokuapp.com/res';
+			const url2 = 'https://f1ml.herokuapp.com/raceList';
             const pRequest = {
                 data:{
                     race: this.state.race
@@ -282,8 +282,17 @@ export default class ResultsScreen extends React.Component
     }*/
     async setInitResults(data){
         //const races = [];
-        const url2 = 'http://192.168.0.17:5000/raceList';
-        await axios.get(url2).then(response => {
+        const url2 = 'https://f1ml.herokuapp.com/raceList';
+        const listRequest = {
+            headers:{
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            responseType: 'json',
+            url: url2
+        };
+        await axios.get(url2, listRequest).then(response => {
             //console.log(response.data);
             const races = response.data.data;
             this.setState({resultData: data, pickerList: races});
@@ -296,6 +305,7 @@ export default class ResultsScreen extends React.Component
         //console.log(this.state.pickerList);
     }
     async setResults(data){
+        const url1 = 'https://f1ml.herokuapp.com/res';
         const raceRequest = {
             data:{
                 race: data
@@ -321,7 +331,7 @@ export default class ResultsScreen extends React.Component
         //console.log(this.state.race);
         //await this.setState({race:data});
         //console.log(this.state.race);
-        const crUrl = 'http://192.168.0.17:5000/res';
+        const crUrl = 'https://f1ml.herokuapp.com/res';
         const raceRequest = {
             data:{
                 race: data
@@ -365,7 +375,6 @@ export default class ResultsScreen extends React.Component
 									<Text style={styles.listHeadText}>Pos</Text>
 									<Text style={styles.listHeadText}>Driver</Text>
 									<Text style={styles.listHeadConstruct}>Constructor</Text>
-									<Text style={styles.listHeadText}>Points</Text>
 									<Text style={styles.listHeadText}>Time</Text>
 								</View>
 					<FlatList 
@@ -378,7 +387,6 @@ export default class ResultsScreen extends React.Component
                                                 <ListItem.Title style={styles.resultTitle}>{item.positionText}</ListItem.Title>
                                                     <Text style={styles.driver}>{item.driver}</Text>
                                                     <Text style={styles.constructor}>{item.constructor}</Text>
-                                                    <Text style={styles.points}>{item.points}</Text>
                                                     <Text style={styles.time}>{item.time_x}</Text>
                                         </View>
 									</ListItem.Content>
