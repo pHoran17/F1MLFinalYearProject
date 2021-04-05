@@ -7,6 +7,9 @@ import RaceClock from '../components/RaceClock';
 import LastRace from '../components/LastRace';
 import Countdown from 'react-native-countdown-component';
 import axios from 'axios';
+import Firebase from '../api/Firebase';
+require('firebase/auth');
+require('firebase/database');
 
 export default class ScreenMain extends React.Component{
 
@@ -31,7 +34,7 @@ export default class ScreenMain extends React.Component{
 			headers: {'Access-Control-Cross-Origin': '*'}
 		};
 
-		await axios.all([req1, req2]).then(axios.spread((...responses) => {
+		/*await axios.all([req1, req2]).then(axios.spread((...responses) => {
 			const res1 = responses[0];
 			const res2 = responses[1];
 			//console.log(res1, res2);
@@ -43,7 +46,50 @@ export default class ScreenMain extends React.Component{
 			console.log(this.state.timeData.time);
 		})).catch(errors => {
 			console.error(errors);
+		})*/
+		const refer = Firebase.database().ref('raceTimes');
+		const lrRefer = Firebase.database().ref('lastRace');
+		const curTime = new Date();
+		const dispTimeData = [];
+		const lrData = [];
+		//console.log(curTime);
+		await refer.once('value', (snapshot) => {
+			if(snapshot.exists()){
+				const i = 0;
+				snapshot.forEach((child) => {
+					//console.log(child.val().data[i].time);
+					const childTime = child.val().data[i].time;
+					const compTime = new Date(childTime).getTime();
+					//console.log(compTime)
+					if(compTime > curTime.getTime()){
+						dispTimeData.push({
+							race:child.val().data[i].race,
+							time:child.val().data[i].time
+						})
+						return;
+					}
+					i += 1;
+
+				})
+				//console.log(dispTimeData);
+			}
+		});
+		await lrRefer.once('value', (snapshot) => {
+			if(snapshot.exists()){
+				snapshot.forEach((child) => {
+					lrData.push({
+						data:child.val().data
+					});
+				})
+				//console.log(lrData);
+				
+				//console.log(this.state.raceData);
+			}
 		})
+		this.setState({
+			raceData:lrData[0].data,
+			timeData:dispTimeData
+		});
 	}
 	//Unused, flatlist used instead in render
 	/*renderItems = ({item},{i}) => {
@@ -67,15 +113,25 @@ export default class ScreenMain extends React.Component{
 	render()
 	{	
 		//Only gets called provdided racedata is not null, this is to prevent crashes
+		//console.log(this.state.raceData);
 		if(this.state.raceData.length !== 0)
 		{
 			//console.log(this.state.raceData[0]);
-					const timeD = this.state.timeData;
+					//console.log(this.state.timeData);
+					const timeD = this.state.timeData[0];
 					const raceD = this.state.raceData;
+					//const raceDate = new Date(timeD.time);
 					const cdTime = new Date(timeD.time).getTime();
-					const tLabels = {d: 'Days', h: 'Hours', m: 'Minutes', s: 'Seconds'};
+					const cdTimeSecs = cdTime * 86400;
+					const dateNow = Date.now();
+					//const timeNow = dateNow.getTime();
+					//const difTime = Math.floor((cdTime - dateNow)/1000);
+					const difTime = Math.round((cdTime - dateNow)/1000);
+					console.log(difTime);
+					const tLabels = {d: 'Days', h: 'Hours', m: 'Minutes', s: 'Seconds', ms:'Milliseconds'};
 					const {nav} = this.props.navigation;
-					console.log('Time: ' + cdTime);
+					console.log('gettime: ' + cdTime);
+					console.log('Seconds: ' + cdTimeSecs);
 					const i = 0;
 					//Convert raceD to array and map text
 					//const raceArr = [raceD];
@@ -87,9 +143,9 @@ export default class ScreenMain extends React.Component{
 						<>
 							<Header {...this.props}/>
 							<View style={styles.clockContainer}>
-								<Text style={styles.raceName}>Next Race: {timeD.track}</Text>
-								<Countdown until={cdTime}
-								timeToShow={['D', 'H', 'M', 'S']}
+								<Text style={styles.raceName}>Next Race: {timeD.race}</Text>
+								<Countdown until={difTime}
+								timeToShow={['D', 'H', 'M']}
 								timeLabels={tLabels}
 								size={10}/>
 							</View>
