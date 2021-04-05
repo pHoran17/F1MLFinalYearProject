@@ -65,7 +65,7 @@ const NavButtons = ({navigation}) => {
 	const onResPress = () => {
 		navigation.navigate('Results')
 	}
-	//Add icons for each button
+	//Renders buttons containing an icon and text to describe the respective pages that they navigate to
 	return(
 			<View style={styles.container}>
 				<TouchableOpacity

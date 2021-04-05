@@ -125,7 +125,8 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		textAlign: 'center',
 		color: '#ffffff',
-		marginLeft:110,
+		marginLeft:120,
+		marginTop:70,
 		position:'relative'
 	},
 	backText:{

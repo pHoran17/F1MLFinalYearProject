@@ -5,6 +5,10 @@ import Header from '../components/Header';
 import NavButtons from '../components/NavButtons';
 import axios from 'axios';
 import base64 from 'base-64';
+import firebase from 'firebase';
+import Firebase from '../api/Firebase';
+require('firebase/auth');
+require('firebase/database');
 
 export default class PredictScreen extends React.Component
 {
@@ -48,7 +52,7 @@ export default class PredictScreen extends React.Component
 				console.error(errors);
 			}))
 			*/
-			axios.get(url1).then(res => {
+			/*axios.get(url1).then(res => {
 				//console.log(res.data.data);
 				const modelReq = res.data.data; 
 				//const decodeImage = base64.decode(b64Image);
@@ -56,9 +60,10 @@ export default class PredictScreen extends React.Component
 					modelData:res.data.data
 				});
 			});
+			*/
 
 
-			axios.get(url2).then(res => {
+			/*axios.get(url2).then(res => {
 				//console.log(res);
 				const b64Image = res.data.ImageBytes;
 				//console.log(this.state.modelData);
@@ -68,16 +73,43 @@ export default class PredictScreen extends React.Component
 					isloading:false
 				});
 				//console.log(this.state.modelData);
+			});*/
+
+			//const predictions = [];
+			const predKey = []
+			const refer = Firebase.database().ref('predict');
+
+			await refer.once('value', (snapshot) => {
+				if(snapshot.exists()){
+					snapshot.forEach((child) => {
+						const key = child.key;
+						predKey.push({
+							pKey: key,
+							data: child.val().data
+						});
+						
+					})
+				}
 			});
+			const predictionKey = predKey[0].pKey
+			await refer.child(predictionKey).once('value', (snapshot) => {
+				this.setState({
+					modelData:snapshot.val().data
+				})
 
-			
+			});
 	}
-
+	/*async setPredictionData(data){
+		this.setState=({
+			modelData:data
+		});
+		console.log(this.state.modelData);
+	}*/
 	render()
 	{
-		if(this.state.graphData.length !== 0){
+		if(this.state.modelData.length !== 0){
 			
-			//console.log(this.state.modelData);
+			console.log(this.state.modelData);
 			return(
 				<>
 					<View style={styles.header}>

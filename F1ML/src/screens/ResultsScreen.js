@@ -346,10 +346,7 @@ export default class ResultsScreen extends React.Component
 	render()
 	{
 		if(this.state.resultData.length !== 0){
-			
-			//console.log(this.state.pickerList);
             //Add points to dataframe, clean \n results to be DNF where a driver failed to finish
-            //console.log(this.state.resultData);
 			return(
 				<>
 					<View style={styles.header}>
@@ -454,7 +451,7 @@ const styles = StyleSheet.create({
     dropdownContainer:{
         flex:1,
         alignItems:'flex-start',
-        marginTop: 20
+        marginTop: 10
     },
     dropdown:{
         padding:10,
@@ -463,10 +460,10 @@ const styles = StyleSheet.create({
         height: 80
     },
 	header:{
-		flex:1
+		flex:2
 	},
 	resultsList:{
-		flex:8,
+		flex:7,
 		
 	},
     listHead:{

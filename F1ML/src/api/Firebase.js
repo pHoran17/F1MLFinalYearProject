@@ -14,13 +14,6 @@ const firebaseConfig = {
     measurementId: "G-L6951NBWY0"
   };
 
-
-const Firebase = firebase.initializeApp(firebaseConfig);
+Firebase = firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
-  /*class Firebase{
-      constructor(){
-          firebase.initializeApp(firebaseConfig);
-      }
-  }*/
-
-  export default Firebase;
+export default Firebase;
