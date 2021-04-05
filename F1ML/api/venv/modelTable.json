@@ -1,0 +1,1 @@
+{"schema":{"fields":[{"name":"index","type":"integer"},{"name":"intercepts","type":"number"},{"name":"coefficents","type":"string"}],"primaryKey":["index"],"pandas_version":"0.20.0"},"data":[{"index":0,"intercepts":4078443.431555009,"coefficents":[28712.1988393017]}]}
