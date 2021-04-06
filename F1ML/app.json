@@ -19,15 +19,16 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.pHoran.f1ml",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.1"
     },
     "android": {
       "package": "com.pHoran.f1ml",
       "googleServicesFile":"./android/app/google-services.json",
       "versionCode":1,
+      "permissions": ["READ_PHONE_STATE", "CAMERA", "READ_CONTACTS", "RECORD_AUDIO"],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/adapticon.png",
+        "backgroundColor": "#ed1005"
       }
     },
     "web": {

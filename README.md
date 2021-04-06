@@ -10,7 +10,7 @@ This option can be found in the Settings menu under Security.
 Once this option is enabled, open the apk in your file manager of choice
 
 Alternatively the application can be installed using Android Debug Bridge (ADB) with the command : 
-adb install F1ML-4dc7fb468b4b4b8a9f382ea7a4baa7ad-signed.apk
+adb install F1ML-e409a95b6c4544b4901eb653538c1b3d-signed.apk
 
 ## How to use F1ML
 When F1ML is opened you will be presented with the start screen. In order to see the core features of this application, you will be required to either register or to login into an existing account. You can choose to do whatever task is required by pressing either the register button or login button
