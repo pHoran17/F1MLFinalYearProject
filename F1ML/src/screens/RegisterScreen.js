@@ -1,3 +1,6 @@
+//Author: Patrick Horan 2021
+//Code for Registration Screen
+
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput} from 'react-native';
 import Header from '../components/Header';
@@ -101,13 +104,14 @@ export default class RegisterScreen extends React.Component{
 			confirmPassword:""
 		}
 	}
+	//Function that is called when the register button is pressed
+	//Handles process of adding user to Firebase database
 	onRegisterPress = () => {
 		if(this.state.password != this.state.confirmPassword){
 			alert("Passwords are not the same, Please reinsert password")
 			return
 		}
-		//console.log(this.state.email);
-		//expand error checking to include specific checks for invalid email and existing email
+
 		Firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then((response) => {
 			const userid = response.user.userid; 
 			const data = {
@@ -123,7 +127,7 @@ export default class RegisterScreen extends React.Component{
 				//alert(err)
 				const eCode = err.code;
 				const eMessage = err.message;
-
+				//Error handling for various errors that can occur as result of user input
 				if(eCode === "auth/weak-password")
 				{
 					alert("Failed to Register: " + eMessage);
@@ -145,6 +149,7 @@ export default class RegisterScreen extends React.Component{
 			});
 		}) 
 	}
+	//Code for rendering Register Screen
 	render()
 	{
 		return(
@@ -205,6 +210,7 @@ export default class RegisterScreen extends React.Component{
 	}
 
 }
+//Stylesheet for Register Screen
 const styles = StyleSheet.create({
 	container:{
 		flex:10,
@@ -213,7 +219,7 @@ const styles = StyleSheet.create({
 	input:{
 		borderRadius: 5,
 		backgroundColor: '#c4b5b5',
-		marginTop: 15,
+		marginTop: 10,
 		marginLeft: 25,
 		marginRight: 25,
 		marginBottom: 10,

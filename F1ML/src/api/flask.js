@@ -1,4 +1,5 @@
-//Configure flask
+//Author: Patrick Horan 2021
+//File for flask configuration
 import axios from 'axios';
 
 export default axios.create({

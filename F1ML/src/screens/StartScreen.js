@@ -1,3 +1,6 @@
+//Author: Patrick Horan 2021
+//Code for Start Screen
+//Contains basic header and two buttons for navigating user to Login and Registration Screens
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Header from '../components/Header';
@@ -6,6 +9,7 @@ import Firebase from '../api/Firebase';
 import firebase from 'firebase';
 require('firebase/auth');
 
+//Old Implementation of STart screen, changed to class implementation during development
 /*const StartScreen = ({navigation}) => {
 	return (
 		/*<View style = {styles.container}>
@@ -30,7 +34,7 @@ require('firebase/auth');
 		</>
 	);
 };*/
-
+//Stylesheet for start screen
 const styles = StyleSheet.create({
 	container:{
 		flex: 10,
@@ -48,6 +52,7 @@ const styles = StyleSheet.create({
 	}
 });
 //const { FireBase } = require('../api/Firebase');	
+//Current implementation of start screen
 export default class StartScreen extends React.Component{
 	
 	constructor(props){
@@ -56,7 +61,7 @@ export default class StartScreen extends React.Component{
 	componentDidMount(){
 		this.checkifLoggedIn();
 	}
-
+	//Function for checking authentication status of user. Automatically navigates user to main screen if they are already authenticated
 	checkifLoggedIn = () =>{
 		//const {email, password} = this.state;
 		Firebase.auth().onAuthStateChanged(function(user){
@@ -68,9 +73,9 @@ export default class StartScreen extends React.Component{
 				console.log("Not Logged In")
 			}
 		}.bind(this)
-	);
+	); //Bind command prevents crash
 	}
-	
+	//Render code for start screen, contains two buttons for navigation
 	render()
 	{
 		//console.log(this.props)

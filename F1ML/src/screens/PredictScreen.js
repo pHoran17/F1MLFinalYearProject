@@ -1,3 +1,6 @@
+//Author: Patrick Horan 2021
+//Code for Prediction Screen. This screen retrieves a Prediction data from the machine learning model which ahs been stored with Firebase.
+
 import React, {useState, useEffect, Component} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, FlatList, Image} from 'react-native';
 import {ListItem} from 'react-native-elements';
@@ -27,12 +30,12 @@ export default class PredictScreen extends React.Component
 
 	async componentDidMount()
 	{
-			const url1 = 'http://192.168.0.17:5000/model';
-			const url2 = 'http://192.168.0.17:5000/graph';
-			const req1 = axios.get(url1);
-			const req2 = axios.get(url2);
+			//Unused Axios requests from when predictions were retrieved from flask server
+			//const url1 = 'http://192.168.0.17:5000/model';
+			//const url2 = 'http://192.168.0.17:5000/graph';
+			//const req1 = axios.get(url1);
+			//const req2 = axios.get(url2);
 
-			//Rewrite to retrieve data from Firebase
 			/*
 			//Causes Unhandled promise rejection when splitting responses, use individual calls instead
 			axios.all([req1, req2]).then(axios.spread((...responses) => {
@@ -62,7 +65,7 @@ export default class PredictScreen extends React.Component
 			});
 			*/
 
-
+			//Previously used code for returning prediction graphs
 			/*axios.get(url2).then(res => {
 				//console.log(res);
 				const b64Image = res.data.ImageBytes;
@@ -75,10 +78,12 @@ export default class PredictScreen extends React.Component
 				//console.log(this.state.modelData);
 			});*/
 
-			//const predictions = [];
+			//Array for holding prediction data
 			const predKey = []
+			//Base query to Realtime Database for retrieving predictions
 			const refer = Firebase.database().ref('predict');
 
+			//Refer query that is called once to retrieve prediction data, active listener not used to improve performance
 			await refer.once('value', (snapshot) => {
 				if(snapshot.exists()){
 					snapshot.forEach((child) => {
@@ -92,6 +97,7 @@ export default class PredictScreen extends React.Component
 				}
 			});
 			const predictionKey = predKey[0].pKey
+			//Query that is used to retrieve data from specific node of predict portion of Realtime Database
 			await refer.child(predictionKey).once('value', (snapshot) => {
 				this.setState({
 					modelData:snapshot.val().data
@@ -99,17 +105,13 @@ export default class PredictScreen extends React.Component
 
 			});
 	}
-	/*async setPredictionData(data){
-		this.setState=({
-			modelData:data
-		});
-		console.log(this.state.modelData);
-	}*/
+	//Render Code for PredictScreen
 	render()
 	{
+		//If statement used to prevent a crash when waiting to retrieve data from Firebase
 		if(this.state.modelData.length !== 0){
 			
-			console.log(this.state.modelData);
+			//console.log(this.state.modelData);
 			return(
 				<>
 					<View style={styles.header}>
@@ -158,6 +160,7 @@ export default class PredictScreen extends React.Component
 		}
 		else
 		{
+			//This is rendered while waiting on data from Firebase request to be assigned
 			//console.log(this.state.graphData);
 			return(
 				<>
@@ -174,12 +177,8 @@ export default class PredictScreen extends React.Component
 	}
 
 }
-/*
-		<View style={styles.container}>
-			<Image style={styles.graph} source={{uri: `data:image/png;base64,${this.state.graphData}`}}/>
-		</View>
-*/
-//Fix styling issues with header and list
+
+//Stylesheet for PredictScreen
 const styles = StyleSheet.create({
 	container:{
 		flex:10,

@@ -1,3 +1,5 @@
+//Original attempt at Main Screen
+//Not used in final application and is not accessible
 import React, {useState, useEffect, Component}from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, FlatList} from 'react-native';
 import Header from '../components/Header';

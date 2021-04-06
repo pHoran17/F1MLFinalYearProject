@@ -1,3 +1,7 @@
+//Author: Patrick Horan 2021
+//Code for Main Screen. This screen is displayed when the user signs in.
+//This screen shows the user a countdown timer for the next race of the current F1 season and the results of the last completed race
+
 import React, {useState, useEffect, Component}from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, FlatList} from 'react-native';
 import {ListItem} from 'react-native-elements';
@@ -26,33 +30,41 @@ export default class ScreenMain extends React.Component{
 	}
 	//Calls after render, used for retrieving data from api, render is called again when state is set in componentdidmount
 	async componentDidMount(){
-		const url1 = 'http://192.168.0.17:5000/time';
-		const url2 = 'http://192.168.0.17:5000/';
-		const req1 = axios.get(url1);
-		const req2 = axios.get(url2);
-		const config = {
-			headers: {'Access-Control-Cross-Origin': '*'}
-		};
+		//Code from old implementation of Axios requests to local implementation of Flask Backend 
+		/*
+			const url1 = 'http://192.168.0.17:5000/time';
+			const url2 = 'http://192.168.0.17:5000/';
+			const req1 = axios.get(url1);
+			const req2 = axios.get(url2);
+			const config = {
+				headers: {'Access-Control-Cross-Origin': '*'}
+			};
+		*/
+		/*
+			await axios.all([req1, req2]).then(axios.spread((...responses) => {
+				const res1 = responses[0];
+				const res2 = responses[1];
+				//console.log(res1, res2);
+				this.setState({
+					raceData: res2.data.data,
+					timeData: res1.data,
+					loading: false
+				});
+				console.log(this.state.timeData.time);
+			})).catch(errors => {
+				console.error(errors);
+			})
+		*/
 
-		/*await axios.all([req1, req2]).then(axios.spread((...responses) => {
-			const res1 = responses[0];
-			const res2 = responses[1];
-			//console.log(res1, res2);
-			this.setState({
-				raceData: res2.data.data,
-				timeData: res1.data,
-				loading: false
-			});
-			console.log(this.state.timeData.time);
-		})).catch(errors => {
-			console.error(errors);
-		})*/
+		//Initialisation of Firebase queries for this page
 		const refer = Firebase.database().ref('raceTimes');
 		const lrRefer = Firebase.database().ref('lastRace');
 		const curTime = new Date();
 		const dispTimeData = [];
 		const lrData = [];
 		//console.log(curTime);
+		//This query is used to retrieve the name and time of the next race in the 2021 F1 season
+		//Only data for one race is returned
 		await refer.once('value', (snapshot) => {
 			if(snapshot.exists()){
 				const i = 0;
@@ -60,7 +72,9 @@ export default class ScreenMain extends React.Component{
 					//console.log(child.val().data[i].time);
 					const childTime = child.val().data[i].time;
 					const compTime = new Date(childTime).getTime();
-					//console.log(compTime)
+
+					//Condition for comparing the current time to the time of an upcoming race.
+					//The data is assigned if the race in question has not been completed
 					if(compTime > curTime.getTime()){
 						dispTimeData.push({
 							race:child.val().data[i].race,
@@ -74,6 +88,7 @@ export default class ScreenMain extends React.Component{
 				//console.log(dispTimeData);
 			}
 		});
+		//Query for returning results for last completed race, currently set to Abu Dhabi 2020
 		await lrRefer.once('value', (snapshot) => {
 			if(snapshot.exists()){
 				snapshot.forEach((child) => {
@@ -86,34 +101,36 @@ export default class ScreenMain extends React.Component{
 				//console.log(this.state.raceData);
 			}
 		})
+		//Assignment of values to state variables is called outside of query, only way to ensure that data is assigned
 		this.setState({
 			raceData:lrData[0].data,
 			timeData:dispTimeData
 		});
 	}
 	//Unused, flatlist used instead in render
-	/*renderItems = ({item},{i}) => {
-		//const index = i;
-		console.log(i);
-		return(
-			<ListItem>
-					<ListItem.Content>
-					<ListItem.Title>{this.state.raceData[i].driver}</ListItem.Title>
-					<View>
-						<Text>{this.state.raceData[i].positionOrder}</Text>
-						<Text>{this.state.raceData[i].name_y}</Text>
-						<Text>{this.state.raceData[i].points}</Text>
-						<Text>{this.state.raceData[i].time}</Text>
-					</View>
-					</ListItem.Content>
-			</ListItem>
-		);
-	}*/
+	/*
+		renderItems = ({item},{i}) => {
+			//const index = i;
+			console.log(i);
+			return(
+				<ListItem>
+						<ListItem.Content>
+						<ListItem.Title>{this.state.raceData[i].driver}</ListItem.Title>
+						<View>
+							<Text>{this.state.raceData[i].positionOrder}</Text>
+							<Text>{this.state.raceData[i].name_y}</Text>
+							<Text>{this.state.raceData[i].points}</Text>
+							<Text>{this.state.raceData[i].time}</Text>
+						</View>
+						</ListItem.Content>
+				</ListItem>
+			);
+		}
+	*/
 	//Method for rendering screen, called first in lifecycle
 	render()
 	{	
 		//Only gets called provdided racedata is not null, this is to prevent crashes
-		//console.log(this.state.raceData);
 		if(this.state.raceData.length !== 0)
 		{
 			//console.log(this.state.raceData[0]);
@@ -126,6 +143,8 @@ export default class ScreenMain extends React.Component{
 					const dateNow = Date.now();
 					//const timeNow = dateNow.getTime();
 					//const difTime = Math.floor((cdTime - dateNow)/1000);
+					//Attempt at improving accuracy of countdown clock
+					//Fails to return fully accurate result, hard to determine why due to components lack of documentation
 					const difTime = Math.round((cdTime - dateNow)/1000);
 					console.log(difTime);
 					const tLabels = {d: 'Days', h: 'Hours', m: 'Minutes', s: 'Seconds', ms:'Milliseconds'};
@@ -135,10 +154,11 @@ export default class ScreenMain extends React.Component{
 					const i = 0;
 					//Convert raceD to array and map text
 					//const raceArr = [raceD];
-					if(this.state.raceData.length !== undefined)
+					/*if(this.state.raceData.length !== undefined)
 					{
 						//console.log(this.state.raceData);
-					}
+					}*/
+
 					return(
 						<>
 							<Header {...this.props}/>
@@ -183,12 +203,16 @@ export default class ScreenMain extends React.Component{
 		}
 		else
 		{
-			//console.log(this.state.raceData);
 			//Loads if data recieved from server is null/undefined, Prevents crash
 			return (
-				<View>
-					<Text>Loading...</Text>
-				</View>
+				<>
+					<Header {...this.props}/>
+					<View style={styles.container}>
+					<	Text>Loading...</Text>
+					</View>
+				
+				</>
+				
 			)
 		}
 		
@@ -196,6 +220,10 @@ export default class ScreenMain extends React.Component{
 
 }
 const styles = StyleSheet.create({
+	container:{
+		flex:10,
+		alignItems:'center'
+	},
 	clockContainer:{
 		flex:1,
 		alignItems:'center'

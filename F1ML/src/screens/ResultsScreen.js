@@ -1,3 +1,7 @@
+//Author: Patrick Horan 2021
+//Code for Results Screen. This screen retrieves a specified set of race results ot be displayed.
+//The user can choose which race to view the results for from a list of every F1 race from 1950-2020
+
 import React, {useState, useEffect, Component} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, FlatList, Image} from 'react-native';
 import {ListItem} from 'react-native-elements';
@@ -16,7 +20,8 @@ require('firebase/database');
 export default class ResultsScreen extends React.Component
 {
 	
-	constructor(props)
+	//Constructor called in order to create a state variables for this class, they are used to store data from queries and to render data
+    constructor(props)
 	{
 		super(props);
 
@@ -28,19 +33,14 @@ export default class ResultsScreen extends React.Component
 			isloading: true
 		};
 	}
-    /*getRaceKey(keyRace){
-        const race = this.state.race;
-        keyRace.forEach((dbRace) => {
-            if(race == dbRace.race){
-                return dbRace.key;
-            }
-        })
-    }
-    */
+
 	async componentDidMount()
 	{
-			const url1 = 'https://f1ml.herokuapp.com/res';
+		//Requests to Flask backend are initialised here.
+        //Urls link to specific part of the backend in order to retrieve a list of every race and the results of a specific race respectively	
+            const url1 = 'https://f1ml.herokuapp.com/res';
 			const url2 = 'https://f1ml.herokuapp.com/raceList';
+            //Header objects for each axios request, header information included to prevent request rejections from the Flask backend
             const pRequest = {
                 data:{
                     race: this.state.race
@@ -69,6 +69,8 @@ export default class ResultsScreen extends React.Component
             const items = new Array();
             //const pickerItems = new Array();
             //const racePair = new Object();
+            
+            //Irrelevant code from attempts at using firebase for this screen
             /*refer.on('value',(function (snapshot) 
             {
                 //console.log(snapshot.val());
@@ -229,7 +231,7 @@ export default class ResultsScreen extends React.Component
 				console.error(errors);
 			}))*/
 			
-            
+            //Failed attempt at using axios for retrieveing list of races
             /*axios.get(url2).then(response => {
                 //pickerItems = response.data;
                 //console.log(rList);
@@ -237,34 +239,16 @@ export default class ResultsScreen extends React.Component
             }).catch(function(error){
                 console.log(error);
             });*/
+
+
+            //Axios request for retrieving race results from Flask server
             axios.post(url1, pRequest).then(response => {
-                //console.log(response.data);
+                //setInitResults is called with race results passed as a parameter
+                //This data along will be assigned to the class' state in the function
                 this.setInitResults(response.data.data);
-                //console.log(this.state.resultData);
             }).catch(function(error){
-                console.log(error);
+                alert("Failed to connect:" + error);
             });
-			/*axios.get(url1).then(res => {
-				//console.log(res.data.data);
-				const modelReq = res.data.data; 
-				//const decodeImage = base64.decode(b64Image);
-				this.setState({
-					modelData:res.data.data
-				});
-			});
-
-
-			axios.get(url2).then(res => {
-				//console.log(res);
-				const b64Image = res.data.ImageBytes;
-				//console.log(this.state.modelData);
-				//const decodeImage = base64.decode(b64Image);
-				this.setState({
-					graphData:b64Image,
-					isloading:false
-				});
-				//console.log(this.state.modelData);
-			});*/
 
 			
 	}
@@ -280,6 +264,8 @@ export default class ResultsScreen extends React.Component
             console.log(error);
         });
     }*/
+    //Function that sets the initial race results shown along with retrieving the list of all F1 races
+    //Both JSON objects are assigned to state variables to be utilised in the render method
     async setInitResults(data){
         //const races = [];
         const url2 = 'https://f1ml.herokuapp.com/raceList';
@@ -292,18 +278,21 @@ export default class ResultsScreen extends React.Component
             responseType: 'json',
             url: url2
         };
+        //Code for Get request for retrieving list of races from Flask server, data for race results and list of races is assigned to state here
         await axios.get(url2, listRequest).then(response => {
             //console.log(response.data);
             const races = response.data.data;
             this.setState({resultData: data, pickerList: races});
             //console.log(rList);
         }).catch(function(error){
-            console.log(error);
+            alert("Failed to connect:" + error);
         });
         //console.log(races);
         
         //console.log(this.state.pickerList);
     }
+    //Function that was intended to set the resultData variable of state, changeRace() used instead
+    //A post request is used to request the results of the chosen race and return them to the client as a JSON object
     async setResults(data){
         const url1 = 'https://f1ml.herokuapp.com/res';
         const raceRequest = {
@@ -318,19 +307,18 @@ export default class ResultsScreen extends React.Component
             responseType: 'json',
             url: url1
         };
+
         axios.post(url1, raceRequest).then(response => {
            //await this.setState({resultData: response.data.data, race:data});
            return response.data.data
             
         }).catch(function(error){
-            console.log(error);
+            alert("Failed to connect to server:" + error);
         });
     }
+    //Function for changing the race results when user chooses a new race from the dropdown list.
+    //A post request is called in this method with the chosen race passed as a parameter in the raceRequest object. 
     async changeRace(data){
-        //const newResults = setResults(data);
-        //console.log(this.state.race);
-        //await this.setState({race:data});
-        //console.log(this.state.race);
         const crUrl = 'https://f1ml.herokuapp.com/res';
         const raceRequest = {
             data:{
@@ -344,19 +332,20 @@ export default class ResultsScreen extends React.Component
             responseType: 'json',
             url: crUrl
         };
+        //Post request for retrieving race results, race and resultData state variables are set once the Post request returns a response
         await axios.post(crUrl, raceRequest).then(response => {
-           //await this.setState({resultData: response.data.data, race:data});
+
             this.setState({race: data, resultData: response.data.data});
             
         }).catch(function(error){
-            console.log(error);
+             alert("Failed to connect to server:" + error);
         });
         
     }
 	render()
 	{
-		if(this.state.resultData.length !== 0){
-            //Add points to dataframe, clean \n results to be DNF where a driver failed to finish
+		//If statement used to prevent errors when retrieving data from backend, only renders the full screen's contents when race results have been returned
+        if(this.state.resultData.length !== 0){
 			return(
 				<>
 					<View style={styles.header}>
@@ -402,7 +391,8 @@ export default class ResultsScreen extends React.Component
 		}
 		else
 		{
-			//console.log(this.state.resultData);
+			//Renders this code when waiting on a responce from the backend
+            //Header and navButtons elements are included to maintain consistent layout and functionality
 			return(
 				<>
 					<Header {...this.props}/>
@@ -419,38 +409,8 @@ export default class ResultsScreen extends React.Component
 	}
 
 }
-/*
-<View style={styles.dropdownContainer}>
-                        <DropDownPicker
-                            items={[
-                                {label: 'Abu Dhabi 2020', value:'Abu Dhabi Grand Prix 2020'},
-                                {label: 'Sakhir 2020', value:'Sakhir Grand Prix 2020'},
-                                {label: 'Bahrain 2020', value:'Bahrain Grand Prix 2020'},
-                                {label: 'Turkey 2020', value:'Turkish Grand Prix 2020'},
-                                {label: 'Imola 2020', value:'Emilia Romagna Grand Prix 2020'},
-                                {label: 'Portugal 2020', value:'Portuguese Grand Prix 2020'},
-                                {label: 'Germany 2020', value:'Eifel Grand Prix 2020'},
-                                {label: 'Russian 2020', value:'Russian Grand Prix 2020'},
-                                {label: 'Mugello 2020', value:'Tuscan Grand Prix 2020'},
-                                {label: 'Monza 2020', value:'Italian Grand Prix 2020'},
-                                {label: 'Belgium 2020', value:'Belgian Grand Prix 2020'},
-                                {label: 'Spain 2020', value:'Spanish Grand Prix 2020'},
-                                {label: '70th Anniversary Grand Prix 2020', value:'70th Anniversary Grand Prix 2020'},
-                                {label: 'Great Britain 2020', value:'British Grand Prix 2020'},
-                                {label: 'Hungary 2020', value:'Hungarian Grand Prix 2020'},
-                                {label: 'Styria 2020', value:'Styrian Grand Prix 2020'},
-                                {label: 'Austria 2020', value:'Austrian Grand Prix 2020'}
 
-                        ]}
-                        defaultValue={this.state.race}
-                        style={styles.dropdown}
-                        onChangeItem={item => this.setState({
-                            race: item.value
-                        })}
-                        />
-                    </View>
-*/
-//Fix styling issues with header and list
+//Stylesheet for Prediction screen
 const styles = StyleSheet.create({
 	container:{
 		flex:10,
@@ -487,10 +447,10 @@ const styles = StyleSheet.create({
         marginLeft:10,
 		paddingTop:5,
 		paddingRight:10,
-        marginRight: 5
+        marginRight: 15
     },
     listHeadConstructor:{
-        paddingTop:5,
+        paddingTop:10,
         marginTop:10,
         marginLeft:10,
         marginRight:15,

@@ -1,3 +1,6 @@
+//Author: Patrick Horan 2021
+//COnfiguration file for Firebase features
+
 //import Firebase from 'firebase';
 import * as firebase from 'firebase';
 require('firebase/auth');
@@ -16,6 +19,8 @@ const firebaseConfig = {
 
 const Firebase = require("firebase");
 
+//If statement used to prevent multiple instances of Firebase being called
+//Prevents occasional crash
 if(!Firebase.apps.length){
     Firebase.initializeApp(firebaseConfig);
 }

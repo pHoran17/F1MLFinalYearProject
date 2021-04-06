@@ -1,3 +1,6 @@
+//Author: Patrick Horan 2021
+//Code for Header component. 
+//This component is used on every screen and its functionality is modified depending on the screen that it is being utilised on
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Firebase from '../api/Firebase';
@@ -16,13 +19,16 @@ export default class Header extends React.Component {
 			logoutImage:require('../icons/logout.png')
 		}
 	}
+	//Functionality for logOut button
 	signOut = () => {
 		Firebase.auth().signOut()
 		this.props.navigation.navigate("Start")
 	}
+	//Function for Back button
 	navToPrevPage = () =>{
 		this.props.navigation.goBack()
 	}
+	//Check for status of user Login is executed in componentDidMount(). This will always be called after render()
 	componentDidMount(){
 		if(this.props.route.name == "Start" || this.props.route.name == "Main" )
 		Firebase.auth().onAuthStateChanged((user) => {
@@ -34,7 +40,13 @@ export default class Header extends React.Component {
 			}
 		})
 	}
+	//Render code for header
+	//Various conditions are put in place to display different functionality in the header component depending on the screen that is being used
+	//Back and Logout buttons added if user is signed in and not on Main Screen
+	//Back button can be added on Login + Register Screens
+	//Logout button is rendered on main screen without back button
 	render(){
+		//Back and Logout buttons added if user is signed in and not on Main Screen
 		if(this.props.route.name == "Results" || this.props.route.name == "Predict")
 		{
 			return(
@@ -59,6 +71,7 @@ export default class Header extends React.Component {
 		}
 		else if(this.state.loggedIn == true && this.props.route.name == "Main")
 		{
+			//Logout button is rendered on main screen without back button
 			return(
 				<View style={styles.header}>
 					<Text style={styles.headerText}>F1ML</Text>
@@ -74,14 +87,16 @@ export default class Header extends React.Component {
 		}
 		else if(this.state.loggedIn == false && this.props.route.name == "Start")
 		{
-			//console.log(this.props);
+			//Basic header with no buttons is displayed if user is on Start screen
 			return(
 				<View style={styles.header}>
 					<Text style={styles.headerText}>F1ML</Text>
 				</View>
 			);
 		}
+		
 		else{
+			//Back button can be added on Login + Register Screens
 			return(
 				<View style={styles.header}>
 					<TouchableOpacity 
@@ -98,7 +113,8 @@ export default class Header extends React.Component {
 
 	}
 }
-
+//Stylesheet for header component
+//Contains styling for each variant of the header component depending on the conditions that are met in render()
 const styles = StyleSheet.create({
 	header:{
 		flex: 2,

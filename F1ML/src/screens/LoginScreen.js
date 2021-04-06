@@ -1,3 +1,5 @@
+//Author: Patrick Horan 2021
+//Code for Login Screen, it is used to enable the user to sign in. A requirement for viewing the rest of the screens of this app 
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput} from 'react-native';
 import Header from '../components/Header';

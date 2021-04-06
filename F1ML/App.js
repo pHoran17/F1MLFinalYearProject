@@ -20,7 +20,8 @@ import ResultsScreen from './src/screens/ResultsScreen';
 import NavButtons from './src/components/NavButtons';
 
 //firebase.initializeApp(firebaseConfig);
-
+//Function containing the heirarchy of navigaton for the front end
+//screenOptions included to hide default header included in expo
 function App() {
   return (
     <NavigationContainer initialRouteName="Start">
@@ -43,29 +44,3 @@ function App() {
 const Stack = createStackNavigator();
 
 export default App;
-/*
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-*/
-
-/*const navigator = createStackNavigator({
-		Start: StartScreen,
-		Login: LoginScreen,
-		Register: RegisterScreen,
-		Main: ScreenMain,
-		Predict: PredictScreen
-	
-},	{
-		initialRouteName: 'Start',
-		defaultNavigationOptions: {
-			title: 'F1ML'
-	}
-});
-*/
-//export default createAppContainer(navigator);

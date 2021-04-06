@@ -1,3 +1,5 @@
+//Author: Patrick Horan 2021
+//Code for Navigation Buttons that are displayed when user is signed in and on the main, results or prediction screen
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {createAppContainer} from "react-navigation";
@@ -55,13 +57,15 @@ import {useNavigation} from '@react-navigation/native';
 const NavButtons = ({navigation}) => {
 	//console.log(navigation)
 
+	//Function called when button for Main screen is pressed
 	const onHomePress = () => {
 		navigation.navigate("Main")
 	}
-
+	//Function Called when button for Prediction screen is pressed
 	const onPredPress = () => {
 		navigation.navigate('Predict')
 	}
+	//Function called when button for Results screen is pressed
 	const onResPress = () => {
 		navigation.navigate('Results')
 	}
@@ -92,7 +96,8 @@ const NavButtons = ({navigation}) => {
 			</View>
 		);
 }; 
-
+//Stylesheet for NAvigation buttons, renders buttons in row that is displayed at the bottom of a page
+//Done using absolute positioning and the row atrribute for flexDirection
 const styles = StyleSheet.create({
 	container:{
 		flex: 1,
